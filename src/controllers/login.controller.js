@@ -1,15 +1,12 @@
-const { loginService } = require('../services');
-const errorMap = require('../utils/errorMap');
+const loginService = require('../services/login.service');
 
-const login = async (req, res) => {
-  const { email, password } = req.body;
-  const { type, message } = await loginService.findByEmail(email, password);
+const loginController = {
+  login: async (req, res) => {
+    const { email, password } = req.body;
+    const token = await loginService({ email, password });
 
-  if (type) return res.status(errorMap.mapError(type)).json({ message });
-
-  return res.status(200).json(message);
+    return res.status(200).json({ token });
+  },
 };
 
-module.exports = {
-  login,
-};
+module.exports = loginController;

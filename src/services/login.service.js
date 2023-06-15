@@ -1,21 +1,15 @@
 const { User } = require('../models');
-const schema = require('./validations/validations');
 const { createToken } = require('../utils/jwt');
 
-const findByEmail = async (email, password) => {
-  const error = schema.validateEmail(email);
-  if (error.type) return error;
+const loginService = async ({ email, _password }) => {
+  const user = await User.findOne({ where: { email } });
 
-  const userInfo = await User.findOne({ where: { email } });
-  if (!userInfo || userInfo.dataValues.password !== password) { 
-    return { type: 'BAD_REQUEST', message: 'Invalid fields' }; 
-  }
+   const payload = {
+     id: user.id,
+   };
+   const token = createToken(payload);
 
-  const token = createToken({ name: userInfo.dataValues.displayName });
-
-  return { type: null, message: { token } };
+   return token;
 };
 
-module.exports = {
-  findByEmail,
-};
+module.exports = loginService;

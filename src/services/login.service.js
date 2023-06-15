@@ -1,7 +1,7 @@
 const { User } = require('../models');
 const { createToken } = require('../utils/jwt');
 
-const loginService = async ({ email, _password }) => {
+const LoginService = async ({ email, _password }) => {
   const user = await User.findOne({ where: { email } });
 
    const payload = {
@@ -12,4 +12,4 @@ const loginService = async ({ email, _password }) => {
    return token;
 };
 
-module.exports = loginService;
+module.exports = LoginService;

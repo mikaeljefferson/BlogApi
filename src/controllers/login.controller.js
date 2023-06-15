@@ -1,12 +1,12 @@
-const loginService = require('../services/login.service');
+const LoginService = require('../services/login.service');
 
-const loginController = {
+const LoginController = {
   login: async (req, res) => {
     const { email, password } = req.body;
-    const token = await loginService({ email, password });
+    const token = await LoginService({ email, password });
 
     return res.status(200).json({ token });
   },
 };
 
-module.exports = loginController;
+module.exports = LoginController;

@@ -1,11 +1,11 @@
-const { Router } = require('express');
-
-const loginRouter = require('./login.router');
 const userRouter = require('./user.router');
+const loginRouter = require('./login.router');
+const blogPostRouter = require('./blogPost.router');
+const categoryRouter = require('./Category.router');
 
-const appRoutes = Router();
-
-appRoutes.use('/login', loginRouter);
-appRoutes.use('/user', userRouter);
-
-module.exports = appRoutes;
+module.exports = {
+    userRouter,
+    loginRouter,
+    blogPostRouter,
+    categoryRouter,
+};

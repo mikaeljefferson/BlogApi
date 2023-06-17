@@ -1,38 +1,47 @@
 /* eslint-disable max-lines-per-function */
 module.exports = (sequelize, DataTypes) => {
-    const PostCategory = sequelize.define(
-      'PostCategory',
-      {
-        postId: {
-          type: DataTypes.INTEGER,
-          foreignKey: true,
+  const PostCategory = sequelize.define(
+    'PostCategory',
+    {
+      postId: {
+        allowNull: false,
+        type: DataTypes.INTEGER,
+        primaryKey: true,
+        references: {
+          model: 'blog_posts',
         },
-        categoryId: DataTypes.INTEGER,
-          foreignKey: true,
-        
       },
-      {
-        timestamps: false,
-        tableName: 'posts_categories',
-        underscored: true,
+      categoryId: {
+        allowNull: false,
+        type: DataTypes.INTEGER,
+        primaryKey: true,
+        references: {
+          model: 'categories',
+        },
       },
-);
-  
-    PostCategory.associate = ({ BlogPost, Category }) => {
-      BlogPost.belongsToMany(Category, {
-        as: 'categories',
-        through: PostCategory,
-        foreignKey: 'postId',
+    },
+    {
+      tableName: 'posts_categories',
+      timestamps: false,
+      underscored: true,
+    },
+  );
+
+  PostCategory.associate = ({ BlogPost, Category }) => {
+    BlogPost.belongsToMany(Category, {
+      through: PostCategory,
+      foreignKey: 'postId',
       otherKey: 'categoryId',
+      as: 'categories',
     });
-  
-      Category.belongsToMany(BlogPost, {
-        as: 'blog_posts',
-        through: PostCategory,
-        foreignKey: 'postId',
-        otherKey: 'categoryId',
-      });
-    };
-  
-    return PostCategory;
+
+    Category.belongsToMany(BlogPost, {
+      through: PostCategory,
+      foreignKey: 'categoryId',
+      otherKey: 'postId',
+      as: 'blogPosts',
+    });
   };
+  
+  return PostCategory;
+};
